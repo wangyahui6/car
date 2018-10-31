@@ -1,35 +1,72 @@
 var ui;
 (function (ui) {
     var Browser = Laya.Browser;
-    var enemy = /** @class */ (function () {
-        function enemy() {
+    class enemy {
+        constructor(skin) {
             this.y = -120;
             this.x = 200;
             this.speed = 10;
-            this.enemy = new Laya.Image();
+            this.enemy = new Laya.Image(skin);
         }
-        enemy.prototype.init = function (speed, x, category) {
-            if (speed === void 0) { speed = 10; }
-            if (x === void 0) { x = 200; }
-            if (category === void 0) { category = 0; }
-            var carList = ['car1', 'car3', 'car4'];
-            this.enemy.skin = "car/" + carList[category] + ".png";
+        init(speed = 10, x = 200) {
             this.speed = speed;
             this.x = x;
             this.y = -120;
             this.enemy.pos(this.x, this.y);
             Laya.stage.addChild(this.enemy);
-        };
-        enemy.prototype.update = function (databus) {
+        }
+        update(databus, category = 'basic') {
             if (this.y > Browser.height + 20) {
                 Laya.stage.removeChild(this.enemy);
-                databus.removeEnemy(this);
+                databus.removeEnemy(this, category);
             }
             this.y += this.speed;
             this.enemy.pos(this.x, this.y);
-        };
-        return enemy;
-    }());
+        }
+    }
     ui.enemy = enemy;
+    class basicEnemy extends enemy {
+        constructor() {
+            super('car/car4.png');
+        }
+    }
+    ui.basicEnemy = basicEnemy;
+    class naughtyEnemy extends enemy {
+        constructor() {
+            super('car/car1.png');
+        }
+        init(speed = 10, x = 200) {
+            this.initX = x;
+            super.init(speed, x);
+        }
+        update(databus, hexo) {
+            let direction = -1;
+            if (this.y >= hexo.car.y - 200 && Math.abs(this.initX - this.x) <= 80 && (this.x + 10) <= Browser.width) {
+                this.x += 5;
+            }
+            super.update(databus, 'naughty');
+        }
+    }
+    ui.naughtyEnemy = naughtyEnemy;
+    class evilEnemy extends enemy {
+        constructor() {
+            super('car/car3.png');
+        }
+        init(speed = 10, x = 200) {
+            this.initX = x;
+            super.init(speed, x);
+        }
+        update(databus, hexo) {
+            let direction = 1;
+            if (this.initX > hexo.car.x) {
+                direction = -1;
+            }
+            if (this.y >= hexo.car.y - 200 && Math.abs(this.initX - this.x) <= 80 && (this.x + 5) <= Browser.width) {
+                this.x += 5 * direction;
+            }
+            super.update(databus, 'evil');
+        }
+    }
+    ui.evilEnemy = evilEnemy;
 })(ui || (ui = {}));
 //# sourceMappingURL=enemy.js.map

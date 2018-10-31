@@ -5,7 +5,15 @@ import Browser = Laya.Browser;
 import Pool = Laya.Pool;
 import Car = ui.car;
 import Background = ui.background;
-import Enemy = ui.enemy;
+import BasicEnemy = ui.basicEnemy;
+import EvilEnemy = ui.evilEnemy;
+import NaughtyEnemy = ui.naughtyEnemy;
+import carList from './round1.js';
+var enemyMap = {
+	basic: BasicEnemy,
+	evil: EvilEnemy,
+	naughty: NaughtyEnemy
+};
 let instance;
 class DataBus {
 	public enemys = [];
@@ -25,9 +33,9 @@ class DataBus {
 		this.enemys = [];
 	}
 
-	public removeEnemy(enemy) {
+	public removeEnemy(enemy, category) {
 		this.enemys.shift();
-		Pool.recover('enemy', enemy);
+		Pool.recover(category, enemy);
 	}
 }
 let databus = new DataBus();
@@ -45,7 +53,7 @@ class main {
 		this.bg.update();
 		let enemys = [].concat(databus.enemys);
 		enemys.forEach((item) => {
-			item.update(databus);
+			item.update(databus, this.hexo);
 			this.hexo.checkCollision(item, databus);
 		});
 		this.generateEnemy();
@@ -58,12 +66,10 @@ class main {
 	}
 	
 	private generateEnemy(): void {
-		if(databus.frame % 20 === 0){
-			var randow = Math.random() * (0.84 - 0.16) + 0.16;
-			var categoryRandow = Math.floor(Math.random() * 3);
-			var xDistance = Browser.width * randow;
-			let enemy = Pool.getItemByClass('enemy', Enemy);
-			enemy.init(20, xDistance, categoryRandow);
+		let carItem = carList[databus.frame];
+		if(carItem){
+			let enemy = Pool.getItemByClass(carItem.category, enemyMap[carItem.category]);
+			enemy.init(carItem.speed, Browser.width * carItem.xDistance);
 			databus.enemys.push(enemy);
 		}
 	}

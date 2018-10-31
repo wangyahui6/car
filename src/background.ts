@@ -1,6 +1,8 @@
 module ui{
+    import Browser = Laya.Browser;
     export class background {
         private YDistance: number = 0;
+        private SPEED: number = 0;
         private bg1: Laya.Image;
         private bg2: Laya.Image;
         private isBottom: boolean = false;
@@ -26,9 +28,11 @@ module ui{
             }
         }
         public update(): void {
-            const SPEED = 30;
-            this.YDistance += SPEED;
-            if((this.YDistance + SPEED) >= Browser.height){
+            if(this.SPEED <30){
+                this.SPEED += 0.1;
+            }
+            this.YDistance += this.SPEED;
+            if((this.YDistance + this.SPEED) >= Browser.height){
                 this.isBottom = true;
             }
             this.render();
