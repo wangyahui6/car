@@ -23,6 +23,13 @@ var ui;
             this.y += this.speed;
             this.enemy.pos(this.x, this.y);
         }
+        moveToHit(hexo, direction) {
+            const Speed = 8;
+            const Distance = 180;
+            if (this.y >= hexo.car.y - 200 && Math.abs(this.initX - this.x) <= Distance && (this.x + Speed) <= Browser.width) {
+                this.x += Speed * direction;
+            }
+        }
     }
     ui.enemy = enemy;
     class basicEnemy extends enemy {
@@ -33,24 +40,26 @@ var ui;
     ui.basicEnemy = basicEnemy;
     class naughtyEnemy extends enemy {
         constructor() {
-            super('car/car1.png');
+            super('car/car3.png');
+            this.direction = 1;
         }
         init(speed = 10, x = 200) {
             this.initX = x;
             super.init(speed, x);
+            let random = Math.floor(Math.random() * 2); // 随机获取0或者1
+            if (random === 0) {
+                this.direction = -1;
+            }
         }
         update(databus, hexo) {
-            let direction = -1;
-            if (this.y >= hexo.car.y - 200 && Math.abs(this.initX - this.x) <= 80 && (this.x + 10) <= Browser.width) {
-                this.x += 5;
-            }
+            super.moveToHit(hexo, this.direction);
             super.update(databus, 'naughty');
         }
     }
     ui.naughtyEnemy = naughtyEnemy;
     class evilEnemy extends enemy {
         constructor() {
-            super('car/car3.png');
+            super('car/car1.png');
         }
         init(speed = 10, x = 200) {
             this.initX = x;
@@ -61,9 +70,7 @@ var ui;
             if (this.initX > hexo.car.x) {
                 direction = -1;
             }
-            if (this.y >= hexo.car.y - 200 && Math.abs(this.initX - this.x) <= 80 && (this.x + 5) <= Browser.width) {
-                this.x += 5 * direction;
-            }
+            super.moveToHit(hexo, direction);
             super.update(databus, 'evil');
         }
     }

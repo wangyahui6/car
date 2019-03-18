@@ -24,12 +24,9 @@ var ui;
                 this.isBottom = false;
             }
         }
-        update() {
-            if (this.SPEED < 30) {
-                this.SPEED += 0.1;
-            }
-            this.YDistance += this.SPEED;
-            if ((this.YDistance + this.SPEED) >= Browser.height) {
+        update(speed) {
+            this.YDistance += speed;
+            if ((this.YDistance + speed) >= Browser.height) {
                 this.isBottom = true;
             }
             this.render();

@@ -50,7 +50,8 @@ class main {
 		Laya.timer.frameLoop(1, this, this.mainLoop);
 	}
 	private update():void{
-		this.bg.update();
+		this.hexo.setSpeed();
+		this.bg.update(this.hexo.speed);
 		let enemys = [].concat(databus.enemys);
 		enemys.forEach((item) => {
 			item.update(databus, this.hexo);

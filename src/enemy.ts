@@ -5,6 +5,8 @@ module ui{
         protected x: number = 200;
         protected speed: number = 10;
         protected enemy: Laya.Image; 
+        protected initX: number;
+        
         constructor(skin){
             this.enemy = new Laya.Image(skin);
         }
@@ -24,6 +26,13 @@ module ui{
             this.y += this.speed;
             this.enemy.pos(this.x, this.y);
         }
+        public moveToHit(hexo, direction){
+            const Speed = 8;
+            const Distance = 180;
+            if(this.y >= hexo.car.y-200 && Math.abs(this.initX - this.x) <= Distance && (this.x + Speed) <= Browser.width){
+                this.x += Speed * direction;
+            }
+        }
     }
     export class basicEnemy extends enemy{
         constructor() {
@@ -31,26 +40,26 @@ module ui{
         }
     }
     export class naughtyEnemy extends enemy{
-        private initX: number;
+        private direction: number = 1;
         constructor() {
-            super('car/car1.png');
+            super('car/car3.png');
         }
         init(speed = 10, x = 200): void {
             this.initX = x;
             super.init(speed, x);
+            let random = Math.floor(Math.random() * 2); // 随机获取0或者1
+            if(random === 0){
+                this.direction = -1;
+            }
         }
         update(databus, hexo): void {
-            let direction:number = -1;
-            if(this.y >= hexo.car.y-200 && Math.abs(this.initX - this.x) <= 80 && (this.x + 10) <= Browser.width){
-                this.x += 5;
-            }
+            super.moveToHit(hexo, this.direction);
             super.update(databus, 'naughty');
         }
     }
     export class evilEnemy extends enemy{
-        private initX: number;
         constructor() {
-            super('car/car3.png');
+            super('car/car1.png');
         }
         init(speed = 10, x = 200): void {
             this.initX = x;
@@ -61,9 +70,7 @@ module ui{
             if(this.initX > hexo.car.x){
                 direction = -1;
             }
-            if(this.y >= hexo.car.y-200 && Math.abs(this.initX - this.x) <= 80 && (this.x + 5) <= Browser.width){
-                this.x += 5 * direction;
-            }
+            super.moveToHit(hexo, direction);
             super.update(databus, 'evil');
         }
     }

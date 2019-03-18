@@ -27,12 +27,9 @@ module ui{
                 this.isBottom = false;
             }
         }
-        public update(): void {
-            if(this.SPEED <30){
-                this.SPEED += 0.1;
-            }
-            this.YDistance += this.SPEED;
-            if((this.YDistance + this.SPEED) >= Browser.height){
+        public update(speed): void {
+            this.YDistance += speed;
+            if((this.YDistance + speed) >= Browser.height){
                 this.isBottom = true;
             }
             this.render();
