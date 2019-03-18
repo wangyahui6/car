@@ -1,10 +1,13 @@
 D .
-R BB9AAAC7 road.jpg
+R 2BB41EA3 road.jpg
+R 85377DA6 terminal.png
 D car
-P ED412BC7 car1.png
-P 179946A5 car3.png
-P 4023BB50 car4.png
-P 8341C87E main.png
+P 22EE957A blue.png
+P AF40A6CD main.png
+P 29E336A8 purple.png
+P F75D1B7A red.png
+P AEE221DB terminal.png
+P 8278B762 yellow.png
 D explosion
 P 0A62A327 explosion1.png
 P 32EB8013 explosion10.png

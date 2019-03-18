@@ -3,12 +3,13 @@ module ui{
     export class enemy {
         protected y: number = -120;
         protected x: number = 200;
-        protected speed: number = 10;
-        protected enemy: Laya.Image; 
+        public speed: number = 20;
+        public enemy: Laya.Image; 
         protected initX: number;
         
         constructor(skin){
             this.enemy = new Laya.Image(skin);
+            this.enemy.scale(1.5, 1.5);
         }
         public init(speed = 10, x = 200): void {
             this.speed = speed;
@@ -17,32 +18,31 @@ module ui{
             this.enemy.pos(this.x, this.y);
             Laya.stage.addChild(this.enemy);
         }
-        public update(databus, category='basic'): void {
-            if(this.y > Browser.height + 20){
+        public update(databus, hexo, category): void {
+            if(this.y > Browser.height + 20 || this.y < -120){
                 Laya.stage.removeChild(this.enemy);
                 databus.removeEnemy(this, category);
             }
-
-            this.y += this.speed;
+            this.y += hexo.speed - this.speed;
             this.enemy.pos(this.x, this.y);
         }
         public moveToHit(hexo, direction){
             const Speed = 8;
             const Distance = 180;
-            if(this.y >= hexo.car.y-200 && Math.abs(this.initX - this.x) <= Distance && (this.x + Speed) <= Browser.width){
+            if(this.y >= hexo.car.y-400 && Math.abs(this.initX - this.x) <= Distance && (this.x + Speed) <= Browser.width){
                 this.x += Speed * direction;
             }
         }
     }
     export class basicEnemy extends enemy{
         constructor() {
-            super('car/car4.png');
+            super('car/purple.png');
         }
     }
     export class naughtyEnemy extends enemy{
         private direction: number = 1;
         constructor() {
-            super('car/car3.png');
+            super('car/blue.png');
         }
         init(speed = 10, x = 200): void {
             this.initX = x;
@@ -54,12 +54,12 @@ module ui{
         }
         update(databus, hexo): void {
             super.moveToHit(hexo, this.direction);
-            super.update(databus, 'naughty');
+            super.update(databus, hexo, 'naughty');
         }
     }
     export class evilEnemy extends enemy{
         constructor() {
-            super('car/car1.png');
+            super('car/red.png');
         }
         init(speed = 10, x = 200): void {
             this.initX = x;
@@ -71,7 +71,7 @@ module ui{
                 direction = -1;
             }
             super.moveToHit(hexo, direction);
-            super.update(databus, 'evil');
+            super.update(databus, hexo, 'evil');
         }
     }
 }

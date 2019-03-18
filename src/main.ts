@@ -8,6 +8,8 @@ import Background = ui.background;
 import BasicEnemy = ui.basicEnemy;
 import EvilEnemy = ui.evilEnemy;
 import NaughtyEnemy = ui.naughtyEnemy;
+import Timer = ui.timer;
+import Terminal = ui.terminal;
 import carList from './round1.js';
 var enemyMap = {
 	basic: BasicEnemy,
@@ -34,7 +36,8 @@ class DataBus {
 	}
 
 	public removeEnemy(enemy, category) {
-		this.enemys.shift();
+		let index = this.enemys.findIndex(item => item === enemy);
+		this.enemys.splice(index, 1);
 		Pool.recover(category, enemy);
 	}
 }
@@ -43,35 +46,61 @@ let databus = new DataBus();
 class main {
 	private bg: Background;
 	private hexo: Car;
+	private terminal: Terminal;
+	private curItem;
+	private enemyNum: number = 0;
+	private timer: Timer;
+	private sucTxt: Laya.Text;
 	constructor() {
 		this.bg = new Background();
 		this.hexo = new Car();
-
+		this.terminal = new Terminal();
+		this.timer = new Timer();
+		this.timer.start();
+		this.curItem = carList[this.enemyNum];
+		this.sucTxt = new Laya.Text();
+		this.sucTxt.text = '恭喜过关';
+		this.sucTxt.color = "#ffffff"; 
+		this.sucTxt.stroke = 2;
+		this.sucTxt.strokeColor = "#666666";  
+		this.sucTxt.fontSize = 60;  
+		this.sucTxt.pos(Browser.width/2 - this.sucTxt.width/2, 300);
 		Laya.timer.frameLoop(1, this, this.mainLoop);
 	}
-	private update():void{
-		this.hexo.setSpeed();
-		this.bg.update(this.hexo.speed);
-		let enemys = [].concat(databus.enemys);
+	private update():void{ // 每一帧更新的动作
+		this.hexo.setSpeed(); // 设置主角车的速度，最高加速到30，当放开手指或者造到撞击则减速
+		this.bg.update(this.hexo.speed); // 赛道背景根据主角车的速度移动，其实主角车并未移动，是赛道背景的反向移动造成了主角车前进的错觉
+		let enemys = [].concat(databus.enemys); // 所有敌车
 		enemys.forEach((item) => {
-			item.update(databus, this.hexo);
-			this.hexo.checkCollision(item, databus);
+			item.update(databus, this.hexo); // 敌车的移动以及跑出屏幕时的回收
+			this.hexo.checkCollision(item); // 监测主角车是否造到敌车撞击
 		});
-		this.generateEnemy();
+		this.generateEnemy(); // 根据设定，在合适的位置产生敌车
+		if(this.bg.totalDistance >= 32000){
+			this.terminal.show(this.hexo);
+		}
 	}
-	private mainLoop():void{
-		if(databus.gameOver)
-		 return;
+	private mainLoop():void{ // 每一帧的动作，游戏的本质就在于控制每一帧的动作
+		const isSucc = this.hexo.checkTerminal(this.terminal);
+		if(isSucc){
+			this.timer.stop();
+			Laya.stage.addChild(this.sucTxt);
+			return;
+		}
+		if(!this.timer.totalSeconds){
+			this.sucTxt.text = '很遗憾，失败了';
+			this.sucTxt.pos(Browser.width/2 - this.sucTxt.width/2, 300);
+			Laya.stage.addChild(this.sucTxt);
+		}
 		databus.frame++;
 		this.update();
 	}
-	
 	private generateEnemy(): void {
-		let carItem = carList[databus.frame];
-		if(carItem){
-			let enemy = Pool.getItemByClass(carItem.category, enemyMap[carItem.category]);
-			enemy.init(carItem.speed, Browser.width * carItem.xDistance);
+		if(this.curItem && this.bg.totalDistance >= this.curItem.distance){
+			let enemy = Pool.getItemByClass(this.curItem.category, enemyMap[this.curItem.category]);
+			enemy.init(this.curItem.speed, Browser.width * this.curItem.xDistance);
 			databus.enemys.push(enemy);
+			this.curItem = carList[++this.enemyNum];
 		}
 	}
 }

@@ -1,63 +1,165 @@
-export default {
-    100: {
-        spped: 20,
+export default [
+    {
+        distance: 1000,
+        spped: 25,
         xDistance: 0.81,
-        category: 'basic'
+        category: 'basic',
     },
-    115: {
-        spped: 20,
-        xDistance: 0.73,
+    {
+        distance: 1450,
+        spped: 25,
+        xDistance: 0.63,
         category: 'evil'
     },
-    300: {
-        spped: 20,
+    {
+        distance: 2500,
+        spped: 25,
         xDistance: 0.32,
         category: 'naughty'
     },
-    400: {
-        spped: 20,
+    {
+        distance: 4000,
+        spped: 25,
         xDistance: 0.78,
-        category: 'evil'
+        category: 'basic'
     },
-    500: {
-        spped: 20,
+    {
+        distance: 5000,
+        spped: 25,
         xDistance: 0.64,
         category: 'evil'
     },
-    600: {
-        spped: 20,
+    {
+        distance: 6000,
+        spped: 25,
+        xDistance: 0.41,
+        category: 'basic'
+    },
+    {
+        distance: 9000,
+        spped: 25,
         xDistance: 0.81,
+        category: 'basic'
+    },
+    {
+        distance: 10000,
+        spped: 25,
+        xDistance: 0.91,
+        category: 'naughty'
+    },
+    {
+        distance: 11000,
+        spped: 25,
+        xDistance: 0.61,
+        category: 'basic'
+    },
+    {
+        distance: 12000,
+        spped: 25,
+        xDistance: 0.21,
+        category: 'naughty'
+    },
+    {
+        distance: 13000,
+        spped: 25,
+        xDistance: 0.35,
         category: 'evil'
     },
-    700: {
-        spped: 20,
+    {
+        distance: 13400,
+        spped: 25,
+        xDistance: 0.71,
+        category: 'basic'
+    },
+    {
+        distance: 15000,
+        spped: 25,
+        xDistance: 0.61,
+        category: 'basic'
+    },
+    {
+        distance: 16000,
+        spped: 25,
+        xDistance: 0.71,
+        category: 'naughty'
+    },
+    {
+        distance: 17000,
+        spped: 25,
+        xDistance: 0.21,
+        category: 'basic'
+    },
+    {
+        distance: 18000,
+        spped: 25,
+        xDistance: 0.51,
+        category: 'basic'
+    },
+    {
+        distance: 19000,
+        spped: 25,
         xDistance: 0.81,
+        category: 'basic'
+    },
+    {
+        distance: 18000,
+        spped: 25,
+        xDistance: 0.91,
+        category: 'naughty'
+    },
+    {
+        distance: 19000,
+        spped: 25,
+        xDistance: 0.38,
+        category: 'basic'
+    },
+    {
+        distance: 20000,
+        spped: 25,
+        xDistance: 0.61,
+        category: 'basic'
+    },
+    {
+        distance: 25000,
+        spped: 25,
+        xDistance: 0.21,
+        category: 'basic'
+    },
+    {
+        distance: 26000,
+        spped: 25,
+        xDistance: 0.24,
+        category: 'naughty'
+    },
+    {
+        distance: 27000,
+        spped: 25,
+        xDistance: 0.46,
+        category: 'basic'
+    },
+    {
+        distance: 28000,
+        spped: 25,
+        xDistance: 0.89,
         category: 'evil'
     },
-    800: {
-        spped: 20,
-        xDistance: 0.81,
+    {
+        distance: 29000,
+        spped: 25,
+        xDistance: 0.32,
+        category: 'basic'
+    },
+    {
+        distance: 30000,
+        spped: 25,
+        xDistance: 0.51,
         category: 'evil'
     },
-    900: {
-        spped: 20,
-        xDistance: 0.81,
-        category: 'evil'
-    },
-    1000: {
-        spped: 20,
-        xDistance: 0.81,
-        category: 'evil'
-    },
-    1200: {
-        spped: 20,
-        xDistance: 0.81,
-        category: 'evil'
-    },
-    2000: {
-        spped: 20,
-        xDistance: 0.81,
-        category: 'evil'
+    {
+        distance: 31000,
+        spped: 25,
+        xDistance: 0.32,
+        category: 'basic'
     }
-};
+];
 //# sourceMappingURL=round1.js.map

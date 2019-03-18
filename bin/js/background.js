@@ -4,6 +4,7 @@ var ui;
     class background {
         constructor() {
             this.YDistance = 0;
+            this.totalDistance = 0;
             this.SPEED = 0;
             this.isBottom = false;
             this.bg1 = new Laya.Image('road.jpg');
@@ -26,6 +27,7 @@ var ui;
         }
         update(speed) {
             this.YDistance += speed;
+            this.totalDistance += speed;
             if ((this.YDistance + speed) >= Browser.height) {
                 this.isBottom = true;
             }
