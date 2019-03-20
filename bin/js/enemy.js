@@ -1,6 +1,8 @@
 var ui;
 (function (ui) {
     var Browser = Laya.Browser;
+    var LEFT_LIMIT = 20;
+    var RIGHT_LIMIT = 24;
     class enemy {
         constructor(skin) {
             this.y = -120;
@@ -27,8 +29,19 @@ var ui;
         moveToHit(hexo, direction) {
             const Speed = 8;
             const Distance = 180;
-            if (this.y >= hexo.car.y - 400 && Math.abs(this.initX - this.x) <= Distance && (this.x + Speed) <= Browser.width) {
-                this.x += Speed * direction;
+            const RIGHT_POSI_LIMIT = Browser.width - RIGHT_LIMIT - hexo.car.displayWidth;
+            const LEFT_POSI_LIMIT = LEFT_LIMIT;
+            let nextPos = this.x + Speed * direction;
+            if (this.y >= hexo.car.y - 400 && Math.abs(this.initX - this.x) <= Distance) {
+                if (nextPos >= LEFT_POSI_LIMIT && nextPos <= RIGHT_POSI_LIMIT) {
+                    this.x = nextPos;
+                }
+                else if (nextPos < LEFT_POSI_LIMIT) {
+                    this.x = LEFT_POSI_LIMIT;
+                }
+                else {
+                    this.x = RIGHT_POSI_LIMIT;
+                }
             }
         }
     }

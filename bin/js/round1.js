@@ -6,9 +6,9 @@ export default [
         category: 'basic',
     },
     {
-        distance: 1450,
+        distance: 1150,
         spped: 25,
-        xDistance: 0.63,
+        xDistance: 0.73,
         category: 'evil'
     },
     {
